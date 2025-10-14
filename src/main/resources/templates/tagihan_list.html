@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+            <div class="container-fluid">
+                <p class="mb-4">Tabel ini berisi semua data tagihan. Gunakan fitur pencarian dan urutkan untuk mempermudah pengelolaan.</p>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Data Tagihan Internet</h6>
+                        <a th:href="@{/tagihan/add}" class="btn btn-primary btn-sm shadow-sm">
+                            <i class="fas fa-plus fa-sm"></i> Tambah Tagihan
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Area</th>
+                                        <th>Vendor</th>
+                                        <th>Company</th>
+                                        <th>Lokasi</th>
+                                        <th>Tanggal Diterima</th>
+                                        <th>Nilai</th>
+                                        <th>Status</th>
+                                        <th>Note</th> <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="t, iterStat : ${tagihans}">
+                                        <td th:text="${iterStat.count}"></td>
+                                        <td th:text="${t.lokasi.area?.displayName}"></td>
+                                        <td th:text="${t.vendor?.namaVendor} ?: '-'"></td>
+                                        <td th:text="${t.lokasi?.company} ?: '-'"></td>
+                                        <td th:text="${t.lokasi?.namaLokasi} ?: '-'"></td>
+                                        <td th:text="${t.tanggalDiterima}"></td>
+                                        <td th:text="${'Rp ' + #numbers.formatDecimal(t.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}"></td>
+                                        <td>
+                                            <span th:text="${t.status}"
+                                                  th:classappend="${t.status == 'Lunas' or t.status == 'Sudah Dibayar'} ? 'badge badge-success' : 'badge badge-danger'">
+                                            </span>
+                                        </td>
+                                        <td th:text="${t.note}"></td> <td class="text-center">
+                                            <a th:if="${t.status == 'Belum Dibayar'}" th:href="@{'/tagihan/edit/' + ${t.id}}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a th:href="@{'/tagihan/delete/' + ${t.id}}" class="btn btn-sm btn-danger" onclick="return confirm('Apakah yakin ingin menghapus tagihan ini?')"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' }
+        });
+    });
+</script>
+</body>
+</html>

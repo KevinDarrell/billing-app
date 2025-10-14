@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+            <div class="container-fluid">
+                <p class="mb-4">Tabel ini berisi Data Vendor & Lokasi. Gunakan fitur pencarian dan urutkan untuk mempermudah pengelolaan.</p>
+                <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header">
+                        <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="vendor-tab" data-toggle="tab" href="#vendor" role="tab" aria-controls="vendor" aria-selected="true">Data Vendor</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="lokasi-tab" data-toggle="tab" href="#lokasi" role="tab" aria-controls="lokasi" aria-selected="false">Data Lokasi</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
+                                <div class="d-flex justify-content-end mb-3">
+                                    <a th:href="@{/addVendor}" class="btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm"></i> Tambah Vendor</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="dataTableVendor" class="table table-bordered" width="100%">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Nama Vendor</th>
+                                                <th>Email</th>
+                                                <th class="text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="v, iterStat : ${vendors}">
+                                                <td th:text="${iterStat.count}"></td>
+                                                <td th:text="${v.namaVendor}"></td>
+                                                <td th:text="${v.emailVendor} ?: '-'"></td>
+                                                <td class="text-center">
+                                                    <a th:href="@{/editVendor/{id}(id=${v.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="lokasi" role="tabpanel" aria-labelledby="lokasi-tab">
+                                 <div class="d-flex justify-content-end mb-3">
+                                    <a th:href="@{/addLokasi}" class="btn btn-sm btn-primary shadow-sm"><i class="fas fa-plus fa-sm"></i> Tambah Lokasi</a>
+                                </div>
+                                <div class="table-responsive">
+                                    <table id="dataTableLokasi" class="table table-bordered" width="100%">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Area</th>
+                                                <th>Company</th>
+                                                <th>Nama Lokasi</th>
+                                                <th>Alamat</th>
+                                                <th>Kota/Kab</th>
+                                                <th class="text-center">Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="l, iterStat : ${lokasis}">
+                                                <td th:text="${iterStat.count}"></td>
+                                                <td th:text="${l.area?.displayName}"></td>
+                                                <td th:text="${l.company}"></td>
+                                                <td th:text="${l.namaLokasi}"></td>
+                                                <td th:text="${l.alamat}"></td>
+                                                <td th:text="${l.kota}"></td>
+                                                <td class="text-center">
+                                                     <a th:href="@{/editLokasi/{id}(id=${l.id})}" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#dataTableVendor').DataTable({ language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' } });
+        $('#dataTableLokasi').DataTable({ language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' } });
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) { $($.fn.dataTable.tables(true)).DataTable().columns.adjust(); });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+            <div class="container-fluid">
+                <p class="mb-4">Berikut adalah daftar semua pembayaran yang telah dicatat dalam sistem.</p>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Data Pembayaran</h6>
+                        <a href="/pembayaran/add" class="btn btn-primary btn-sm shadow-sm">
+                            <i class="fas fa-plus fa-sm"></i> Tambah Pembayaran
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                             <table class="table table-bordered table-striped" id="dataTable" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Area</th>
+                                        <th>Vendor</th>
+                                        <th>Company</th>
+                                        <th>Nilai Tagihan</th>
+                                        <th>Tanggal Bayar</th>
+                                        <th>Dibayar Oleh</th>
+                                        <th>Bukti Transfer</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="p, iterStat : ${pembayarans}">
+                                        <td th:text="${iterStat.count}"></td>
+                                        <td th:text="${p.tagihan.lokasi.area?.displayName}"></td>
+                                        <td th:text="${p.tagihan?.vendor?.namaVendor} ?: '-'"></td>
+                                        <td th:text="${p.tagihan?.lokasi?.company} ?: '-'"></td>
+                                        <td th:text="${p.tagihan?.nilaiPaymentVoucher == null} ? '-' : 'Rp ' + ${#numbers.formatDecimal(p.tagihan.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}"></td>
+                                        <td th:text="${p.tanggalPembayaran}"></td>
+                                        <td th:text="${p.dibayarOleh}"></td>
+                                        <td class="text-center">
+                                            <a th:if="${p.buktiTransferPath != null}"
+                                               th:href="@{'/uploads/' + ${p.buktiTransferPath}}"
+                                               class="btn btn-sm btn-info text-white"
+                                               target="_blank">
+                                               <i class="fas fa-eye fa-sm"></i> Lihat
+                                            </a>
+                                            <span th:if="${p.buktiTransferPath == null}" class="text-muted">Tidak Ada</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </div>
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' }
+        });
+    });
+</script>
+
+</body>
+</html>

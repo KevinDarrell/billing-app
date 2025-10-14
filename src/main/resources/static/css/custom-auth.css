@@ -1,0 +1,18 @@
+/* src/main/resources/static/css/custom-auth.css */
+
+.auth-bg {
+    background: linear-gradient(135deg, #4e73df 0%, #224abe 100%);
+    min-height: 100vh;
+}
+
+.bg-login-image-custom {
+    background: url('../img/undraw_secure_login_pdn4.svg'); /* Gambar ilustrasi */
+    background-position: center;
+    background-size: cover;
+}
+
+.bg-register-image-custom {
+    background: url('../img/undraw_add_user_re_5oib.svg'); /* Gambar ilustrasi */
+    background-position: center;
+    background-size: cover;
+}

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}">Edit Tagihan</h1>
+
+                <div class="card shadow mb-4 col-lg-8">
+                     <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Formulir Edit Tagihan</h6>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{'/tagihan/update/' + ${tagihan.id}}" th:object="${tagihan}" method="post" class="row g-3">
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="vendor" class="form-label">Vendor</label>
+                                <select id="vendor" class="form-control" th:field="*{vendor}" required>
+                                    <option th:each="v : ${vendors}" th:value="${v.id}" th:text="${v.namaVendor}"></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="lokasi" class="form-label">Lokasi</label>
+                                <select id="lokasi" class="form-control" th:field="*{lokasi}" required>
+                                     <option th:each="l : ${lokasis}" th:value="${l.id}" th:text="${l.namaLokasi} + ' (' + ${l.company} + ')'"></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggalDiterima" class="form-label">Tanggal Diterima</label>
+                                <input id="tanggalDiterima" type="date" class="form-control" th:field="*{tanggalDiterima}" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="nilaiPaymentVoucher" class="form-label">Nilai Tagihan (Rp)</label>
+                                <input id="nilaiPaymentVoucher" type="number" step="1" class="form-control" th:field="*{nilaiPaymentVoucher}" required>
+                            </div>
+                            
+                            <div class="col-12 mb-3">
+                                <label for="note" class="form-label">Note (Opsional)</label>
+                                <textarea id="note" class="form-control" th:field="*{note}" rows="3"></textarea>
+                            </div>
+
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a th:href="@{/tagihan}" class="btn btn-secondary">Batal</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

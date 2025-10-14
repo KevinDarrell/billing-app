@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - BillingApp</title>
+    <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
+    <link th:href="@{/css/custom-auth.css}" rel="stylesheet">
+</head>
+<body class="auth-bg">
+<div class="container">
+    <div class="row justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-flex bg-light align-items-center justify-content-center p-5">
+                            <img th:src="@{/img/logopokphand.png}" alt="Company Logo" style="max-width: 100%; height: auto;">
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                                </div>
+                                
+                                <div th:if="${success_message}" class="alert alert-success text-center small p-2 mb-3" th:text="${success_message}"></div>
+                                <div th:if="${error_message}" class="alert alert-danger text-center small p-2 mb-3" th:text="${error_message}"></div>
+
+                                <form class="user" method="post" th:action="@{/register}" th:object="${user}">
+                                    <div class="form-group">
+                                        <input type="text" th:field="*{username}" class="form-control form-control-user" placeholder="Username" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" th:field="*{email}" class="form-control form-control-user" placeholder="Email Address" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" th:field="*{password}" class="form-control form-control-user" placeholder="Password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <select th:field="*{role}" id="roleSelect" class="form-control" style="font-size: .8rem; border-radius: 10rem; height: 50px; padding-left: 1rem;" required>
+                                            <option value="" disabled>-- Pilih Role --</option>
+                                            <option value="ADMIN">Admin</option>
+                                            <option value="USER">User</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-group" id="area-selection" style="display: none;">
+                                        <select th:field="*{area}" class="form-control" style="font-size: .8rem; border-radius: 10rem; height: 50px; padding-left: 1rem;">
+                                            <option value="" disabled>-- Pilih Area Penugasan --</option>
+                                            <option th:each="areaOpt : ${allAreas}"
+                                                    th:value="${areaOpt}"
+                                                    th:text="${areaOpt.displayName}"></option>
+                                        </select>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary btn-user btn-block">
+                                        Register Account
+                                    </button>
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                     <a class="small" href="/">← Back to Dashboard</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
+<script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+<script th:src="@{/js/sb-admin-2.min.js}"></script>
+
+<script>
+    document.getElementById('roleSelect').addEventListener('change', function() {
+        var areaSelection = document.getElementById('area-selection');
+        var areaSelectElement = areaSelection.querySelector('select');
+
+        if (this.value === 'USER') {
+            areaSelection.style.display = 'block';
+            areaSelectElement.setAttribute('required', 'required');
+        } else {
+            areaSelection.style.display = 'none';
+            areaSelectElement.removeAttribute('required');
+        }
+    });
+</script>
+</body>
+</html>

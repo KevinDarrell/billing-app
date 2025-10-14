@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}">Tambah Pembayaran</h1>
+
+                <div class="card shadow mb-4">
+                     <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Formulir Pembayaran Tagihan</h6>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/pembayaran/save}" th:object="${pembayaran}" method="post" enctype="multipart/form-data" class="row g-3">
+                            
+                            <div class="col-md-12 mb-3">
+                                <label for="tagihan" class="form-label">Tagihan yang Akan Dibayar</label>
+                                <select id="tagihan" class="form-control" th:field="*{tagihan}" required>
+                                    <option value="">-- Pilih Tagihan (Vendor - Nilai) --</option>
+                                    <option th:each="t : ${tagihans}"
+                                            th:value="${t.id}"
+                                            th:text="${t.vendor.namaVendor} + ' - ' + ${'Rp ' + #numbers.formatDecimal(t.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="tanggalPembayaran" class="form-label">Tanggal Pembayaran</label>
+                                <input id="tanggalPembayaran" type="date" class="form-control" th:field="*{tanggalPembayaran}" required>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="dibayarOleh" class="form-label">Dibayar Oleh</label>
+                                <input id="dibayarOleh" type="text" class="form-control" th:field="*{dibayarOleh}" placeholder="Nama Pembayar" required>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                                <label for="file" class="form-label">Upload Bukti Pembayaran</label>
+                                <input id="file" type="file" class="form-control" name="file" accept="image/*,application/pdf" required>
+                                <small class="text-muted">Format yang diizinkan: JPG, PNG, PDF.</small>
+                            </div>
+                            
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-primary">Simpan Pembayaran</button>
+                                <a href="/pembayaran" class="btn btn-secondary">Batal</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/header :: header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}">Edit Vendor</h1>
+                <div class="card shadow mb-4 col-lg-8">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Formulir Edit Vendor</h6>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/updateVendor/{id}(id=${vendor.id})}" th:object="${vendor}" method="post">
+                            <div class="form-group mb-3">
+                                <label for="namaVendor">Nama Vendor</label>
+                                <input id="namaVendor" type="text" class="form-control" th:field="*{namaVendor}" required>
+                            </div>
+                            <div class="form-group mb-4">
+                                <label for="emailVendor">Email Vendor</label>
+                                <input id="emailVendor" type="email" class="form-control" th:field="*{emailVendor}">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update</button>
+                            <a th:href="@{/datavendorlokasi}" class="btn btn-secondary">Kembali</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

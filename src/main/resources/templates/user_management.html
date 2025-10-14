@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/header :: header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+            <div class="container-fluid">
+                <p class="mb-4">Gunakan fitur pencarian untuk menemukan akun pengguna dengan cepat.</p>
+                <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">Daftar Akun Pengguna</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Area</th>
+                                        <th>Status Akun</th>
+                                        <th class="text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="user : ${allUsers}">
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.email}"></td>
+                                        <td th:text="${#strings.replace(user.role, 'ROLE_', '')}"></td>
+                                        <td th:text="${user.area?.displayName} ?: '-'"></td>
+                                        <td class="text-center">
+                                            <span th:text="${user.enabled} ? 'Aktif' : 'Nonaktif'"
+                                                  th:classappend="${user.enabled} ? 'badge badge-success' : 'badge badge-danger'"></span>
+                                        </td>
+                                        <td class="text-center">
+                                            <form th:action="@{/users/toggle/{id}(id=${user.id})}" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-sm"
+                                                        th:classappend="${user.enabled} ? 'btn-outline-danger' : 'btn-outline-success'"
+                                                        th:text="${user.enabled} ? 'Nonaktifkan' : 'Aktifkan'"
+                                                        th:disabled="${#authentication.name == user.username}">
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#dataTable').DataTable({
+            language: { url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/id.json' }
+        });
+    });
+</script>
+
+</body>
+</html>
