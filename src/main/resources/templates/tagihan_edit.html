@@ -34,11 +34,16 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
+                                <label for="invoiceNumber" class="form-label">Nomor Invoice</label>
+                                <input id="invoiceNumber" type="text" class="form-control" th:field="*{invoiceNumber}" placeholder="Contoh: 000-0-XX/INVS/0000" required>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
                                 <label for="tanggalDiterima" class="form-label">Tanggal Diterima</label>
                                 <input id="tanggalDiterima" type="date" class="form-control" th:field="*{tanggalDiterima}" required>
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-12 mb-3">
                                 <label for="nilaiPaymentVoucher" class="form-label">Nilai Tagihan (Rp)</label>
                                 <input id="nilaiPaymentVoucher" type="number" step="1" class="form-control" th:field="*{nilaiPaymentVoucher}" required>
                             </div>

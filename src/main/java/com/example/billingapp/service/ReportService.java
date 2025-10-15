@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -112,23 +113,36 @@ public class ReportService {
         document.add(title);
         document.add(new Paragraph("\n"));
 
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(7);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{4, 2, 2, 2, 2, 4});
+        table.setWidths(new float[]{2, 3, 3, 3, 3, 4, 2});
         Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
 
         table.addCell(new PdfPCell(new Phrase("Area", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Vendor", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Company", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Status", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Jumlah", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Bukti Bayar", headFont)));
+    table.addCell(new PdfPCell(new Phrase("Vendor", headFont)));
+    table.addCell(new PdfPCell(new Phrase("Company", headFont)));
+    table.addCell(new PdfPCell(new Phrase("No. Invoice", headFont)));
+    table.addCell(new PdfPCell(new Phrase("Tanggal Bayar", headFont)));
+    table.addCell(new PdfPCell(new Phrase("Jumlah", headFont)));
+    table.addCell(new PdfPCell(new Phrase("Bukti Bayar", headFont)));
 
         for (Tagihan t : tagihans) {
+            String style = "";
+           if ("Belum Dibayar".equalsIgnoreCase(t.getStatus())) {
+            style = " style='background-color: #ff0000ff;'"; // Warna merah muda
+        }
             table.addCell(t.getLokasi().getArea().getDisplayName());
             table.addCell(t.getVendor().getNamaVendor());
             table.addCell(t.getLokasi().getCompany());
-            table.addCell(t.getStatus());
+            table.addCell(t.getInvoiceNumber());
+
+            Pembayaran p = t.getPembayaran();
+            if (p != null) {
+            table.addCell(p.getTanggalPembayaran().toString());
+            } else {
+            table.addCell("Belum Dibayar");
+            }
+        
             table.addCell(formatRupiah(t.getNilaiPaymentVoucher()));
 
             Pembayaran pembayaran = t.getPembayaran();
@@ -168,16 +182,28 @@ public class ReportService {
 
         htmlBody.append("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse: collapse; font-family: sans-serif; font-size: 12px;'>");
         htmlBody.append("<tr style='background-color:#f2f2f2; text-align:left;'>")
-                .append("<th>Area</th><th>Vendor</th><th>Company</th><th>Status</th><th>Jumlah</th><th>Bukti Bayar</th></tr>");
+                .append("<th>Area</th><th>Vendor</th><th>Company</th><th>No Invoice</th><th>Tanggal Bayar</th><th>Jumlah</th><th>Bukti Bayar</th></tr>");
 
         for (Tagihan t : tagihans) {
+            String style = "";
+            if ("Belum Dibayar".equalsIgnoreCase(t.getStatus())) {
+            style = " style='background-color: #ff0000ff;'"; // Warna merah muda
+        }
             htmlBody.append("<tr>");
             htmlBody.append("<td>").append(t.getLokasi().getArea().getDisplayName()).append("</td>");
             htmlBody.append("<td>").append(t.getVendor().getNamaVendor()).append("</td>");
             htmlBody.append("<td>").append(t.getLokasi().getCompany()).append("</td>");
-            htmlBody.append("<td>").append(t.getStatus()).append("</td>");
-            htmlBody.append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>");
+            htmlBody.append("<td>").append(t.getInvoiceNumber()).append("</td>");
 
+            Pembayaran p = t.getPembayaran();
+            if (p != null) {
+            htmlBody.append("<td>").append(p.getTanggalPembayaran().toString()).append("</td>");
+            } else {
+            htmlBody.append("<td>Belum Dibayar</td>");
+            }
+
+        htmlBody.append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>");
+        // ... (logika link bukti bayar Anda)
             String buktiPath = t.getPembayaran() != null ? t.getPembayaran().getBuktiTransferPath() : null;
             if (StringUtils.hasText(buktiPath)) {
                 String fileUrl = "http://localhost:" + serverPort + "/uploads/" + buktiPath;

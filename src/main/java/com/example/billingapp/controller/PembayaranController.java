@@ -111,16 +111,29 @@ public class PembayaranController {
         File directory = new File(uploadDir);
         if (!directory.exists()) directory.mkdirs();
         
-        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-        file.transferTo(new File(directory.getAbsolutePath() + File.separator + fileName));
+        // ✅ PERBAIKAN: Logika baru untuk rename file sesuai format invoice
+        String invoiceNumber = tagihan.getInvoiceNumber();
+        // Ganti semua karakter '/' dengan '_' agar aman untuk nama file
+        String safeInvoiceNumber = invoiceNumber.replaceAll("/", "_");
+        
+        String originalFileName = file.getOriginalFilename();
+        String fileExtension = "";
+        if (originalFileName != null && originalFileName.contains(".")) {
+            fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+        }
+
+        // Format baru: NOMOR_INVOICE_YANG_AMAN-AREA.extension
+        String newFileName = safeInvoiceNumber + "-" + tagihan.getLokasi().getArea().name() + fileExtension;
+        
+        // Simpan file dengan nama baru
+        file.transferTo(new File(directory.getAbsolutePath() + File.separator + newFileName));
 
         pembayaran.setTagihan(tagihan);
-        pembayaran.setBuktiTransferPath(fileName);
+        pembayaran.setBuktiTransferPath(newFileName); // Simpan nama file yang sudah di-rename
         pembayaranRepository.save(pembayaran);
 
         tagihan.setStatus("Sudah Dibayar");
         tagihan.setNote(null);
-
         tagihanRepository.save(tagihan);
         
         redirectAttributes.addFlashAttribute("successMessage", "Pembayaran berhasil disimpan.");

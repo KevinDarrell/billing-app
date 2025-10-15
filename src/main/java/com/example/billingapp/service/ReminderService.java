@@ -54,7 +54,9 @@ public class ReminderService {
                 .append("<th>Area</th>")
                 .append("<th>Vendor</th>")
                 .append("<th>Company</th>")
+                .append("<th>No Invoice</th>")
                 .append("<th>Lokasi</th>")
+                .append("<th>Kota/Kab</th>")
                 .append("<th>Tanggal Diterima</th>")
                 .append("<th>Nilai</th>")
                 .append("<th>Status</th>")
@@ -62,12 +64,19 @@ public class ReminderService {
                 .append("</tr>");
 
             for (Tagihan t : userTagihans) {
+
+                String style = "";
+            if ("Belum Dibayar".equalsIgnoreCase(t.getStatus())) {
+                style = " style='background-color: #ff0000ff;'"; // Warna merah muda
+            }
                 // ✅ PERBAIKAN: Urutan data disesuaikan dengan header
                 body.append("<tr>")
                     .append("<td>").append(t.getLokasi().getArea().getDisplayName()).append("</td>")
                     .append("<td>").append(t.getVendor().getNamaVendor()).append("</td>")
                     .append("<td>").append(t.getLokasi().getCompany()).append("</td>")
+                    .append("<td>").append(t.getInvoiceNumber()).append("</td>")
                     .append("<td>").append(t.getLokasi().getNamaLokasi()).append("</td>")
+                    .append("<td>").append(t.getLokasi().getKota()).append("</td>")
                     .append("<td>").append(t.getTanggalDiterima()).append("</td>")
                     .append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>")
                     .append("<td><b>").append(t.getStatus()).append("</b></td>")

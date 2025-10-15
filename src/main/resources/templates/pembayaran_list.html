@@ -28,8 +28,7 @@
                                         <th>No</th>
                                         <th>Area</th>
                                         <th>Vendor</th>
-                                        <th>Company</th>
-                                        <th>Nilai Tagihan</th>
+                                        <th>No. Invoice</th> <th>Nilai Tagihan</th>
                                         <th>Tanggal Bayar</th>
                                         <th>Dibayar Oleh</th>
                                         <th>Bukti Transfer</th>
@@ -40,18 +39,12 @@
                                         <td th:text="${iterStat.count}"></td>
                                         <td th:text="${p.tagihan.lokasi.area?.displayName}"></td>
                                         <td th:text="${p.tagihan?.vendor?.namaVendor} ?: '-'"></td>
-                                        <td th:text="${p.tagihan?.lokasi?.company} ?: '-'"></td>
-                                        <td th:text="${p.tagihan?.nilaiPaymentVoucher == null} ? '-' : 'Rp ' + ${#numbers.formatDecimal(p.tagihan.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}"></td>
+                                        <td th:text="${p.tagihan?.invoiceNumber}"></td> <td th:text="${'Rp ' + #numbers.formatDecimal(p.tagihan.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}"></td>
                                         <td th:text="${p.tanggalPembayaran}"></td>
                                         <td th:text="${p.dibayarOleh}"></td>
                                         <td class="text-center">
-                                            <a th:if="${p.buktiTransferPath != null}"
-                                               th:href="@{'/uploads/' + ${p.buktiTransferPath}}"
-                                               class="btn btn-sm btn-info text-white"
-                                               target="_blank">
-                                               <i class="fas fa-eye fa-sm"></i> Lihat
-                                            </a>
-                                            <span th:if="${p.buktiTransferPath == null}" class="text-muted">Tidak Ada</span>
+                                            <a th:if="${p.buktiTransferPath != null}" th:href="@{'/uploads/' + ${p.buktiTransferPath}}" class="btn btn-sm btn-info" target="_blank"><i class="fas fa-eye"></i> Lihat</a>
+                                            <span th:if="${p.buktiTransferPath == null}">-</span>
                                         </td>
                                     </tr>
                                 </tbody>

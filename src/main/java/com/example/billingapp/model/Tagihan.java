@@ -28,6 +28,9 @@ public class Tagihan {
     @OneToOne(mappedBy = "tagihan", cascade = CascadeType.ALL, orphanRemoval = true)
     private Pembayaran pembayaran;
 
+    @Column(unique = true, nullable = false)
+    private String invoiceNumber;
+
     @Column(columnDefinition = "TEXT")
     private String note;
 
@@ -54,6 +57,9 @@ public class Tagihan {
 
     public Pembayaran getPembayaran() { return pembayaran; }
     public void setPembayaran(Pembayaran pembayaran) { this.pembayaran = pembayaran; }
+
+    public String getInvoiceNumber() { return invoiceNumber; }
+    public void setInvoiceNumber(String invoiceNumber) { this.invoiceNumber = invoiceNumber; }
 
     public String getNote() { return note; }
     public void setNote(String note) { this.note = note; }
