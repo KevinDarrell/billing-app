@@ -123,7 +123,7 @@ public class PembayaranController {
         }
 
         // Format baru: NOMOR_INVOICE_YANG_AMAN-AREA.extension
-        String newFileName = safeInvoiceNumber + "-" + tagihan.getLokasi().getArea().name() + fileExtension;
+        String newFileName = tagihan.getLokasi().getArea().name() + "-" + safeInvoiceNumber + fileExtension;
         
         // Simpan file dengan nama baru
         file.transferTo(new File(directory.getAbsolutePath() + File.separator + newFileName));
