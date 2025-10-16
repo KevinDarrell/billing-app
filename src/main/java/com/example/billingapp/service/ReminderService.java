@@ -3,7 +3,9 @@ package com.example.billingapp.service;
 import com.example.billingapp.model.Tagihan;
 import com.example.billingapp.model.User;
 import com.example.billingapp.repository.TagihanRepository;
+
 import jakarta.mail.MessagingException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+
 
 @Service
 public class ReminderService {
@@ -58,7 +62,7 @@ public class ReminderService {
                 .append("<th>Lokasi</th>")
                 .append("<th>Kota/Kab</th>")
                 .append("<th>Tanggal Diterima</th>")
-                .append("<th>Nilai</th>")
+                .append("<th>Jumlah</th>")
                 .append("<th>Status</th>")
                 .append("<th>Note</th>")
                 .append("</tr>");
@@ -71,7 +75,7 @@ public class ReminderService {
             }
                 // ✅ PERBAIKAN: Urutan data disesuaikan dengan header
                 body.append("<tr>")
-                    .append("<td>").append(t.getLokasi().getArea().getDisplayName()).append("</td>")
+                    .append("<td>").append(t.getLokasi().getArea().getName()).append("</td>")
                     .append("<td>").append(t.getVendor().getNamaVendor()).append("</td>")
                     .append("<td>").append(t.getLokasi().getCompany()).append("</td>")
                     .append("<td>").append(t.getInvoiceNumber()).append("</td>")

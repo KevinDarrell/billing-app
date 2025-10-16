@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/header :: header}"></head>
+<body id="page-top">
+<div id="wrapper">
+    <div th:replace="~{fragments/sidebar :: sidebar}"></div>
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div th:replace="~{fragments/topbar :: topbar}"></div>
+            <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}">Form Area</h1>
+
+                <div class="card shadow mb-4 col-lg-6">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="${area.id == null} ? 'Formulir Tambah Area' : 'Formulir Edit Area'">Formulir Area</h6>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/areas/save}" th:object="${area}" method="post">
+                            <input type="hidden" th:field="*{id}" />
+                            <div class="form-group mb-3">
+                                <label for="name">Nama Area</label>
+                                <input id="name" type="text" class="form-control" th:field="*{name}" placeholder="Contoh: DKI Jakarta" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <a th:href="@{/areas}" class="btn btn-secondary">Kembali</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{fragments/footer :: footer}"></div>
+    </div>
+</div>
+</body>
+</html>

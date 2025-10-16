@@ -21,14 +21,14 @@
                                 <select id="area" class="form-control" th:field="*{area}" required>
                                     <option value="">-- Pilih Area --</option>
                                     <option th:each="areaOpt : ${allAreas}"
-                                            th:value="${areaOpt}"
-                                            th:text="${areaOpt.displayName}"></option>
+                                            th:value="${areaOpt.id}"
+                                            th:text="${areaOpt.name}"></option>
                                 </select>
                             </div>
                             
                             <div class="form-group mb-3" sec:authorize="hasRole('USER')">
                                 <label>Area</label>
-                                <input type="text" class="form-control" th:value="${#authentication.principal.area.displayName}" disabled/>
+                                <input type="text" class="form-control" th:value="${#authentication.principal.area.name}" disabled/>
                             </div>
 
                             <div class="form-group mb-3">

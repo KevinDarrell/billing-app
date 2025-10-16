@@ -15,10 +15,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/**")
                 .addResourceLocations("file:" + uploadDir);
     }
-
-    // ✅ 2. TAMBAHAN: Daftarkan konverter String ke Enum Area di sini
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(new StringToAreaConverter());
-    }
 }

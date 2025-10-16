@@ -1,25 +1,20 @@
 package com.example.billingapp.model;
 
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "areas")
+public class Area {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-public enum Area {
-    DKI("DKI"),
-    BANTEN("Banten"),
-    JABAR("Jabar"),
-    JATENG("Jateng"),
-    JATIM("Jatim"),
-    SUMBAGSUL("Sumbagsul"),
-    SUMBAGSEL("Sumbagsel"),
-    SUMBAGUT("Sumbagut"),
-    EASTERN("Eastern");
+    @Column(unique = true, nullable = false)
+    private String name;
 
-    private final String displayName;
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    Area(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 }

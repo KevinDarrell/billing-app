@@ -37,7 +37,7 @@ public class SecurityConfig {
                 .requestMatchers("/login", "/css/**", "/js/**", "/vendor/**", "/img/**", "/uploads/**").permitAll()
                 
                 // ✅ PERBAIKAN: Hanya ADMIN yang bisa akses URL ini
-                .requestMatchers("/register/**", "/pengaturan/kepala-area/**", "/users/**").hasRole("ADMIN")
+                .requestMatchers("/register/**", "/pengaturan/kepala-area/**", "/users/**", "/areas/**").hasRole("ADMIN")
                 
                 // Semua URL lain harus diautentikasi (sudah login)
                 .anyRequest().authenticated()

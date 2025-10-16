@@ -21,8 +21,8 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email; // ✅ Tambahkan kolom email
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "area_id")
     private Area area;
 
     @Column(name = "is_area_head", nullable = false, columnDefinition = "BIT(1) DEFAULT 0")

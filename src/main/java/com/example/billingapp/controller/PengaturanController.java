@@ -4,6 +4,7 @@ import com.example.billingapp.model.Area;
 import com.example.billingapp.model.User;
 import com.example.billingapp.repository.UserRepository;
 import com.example.billingapp.service.PengaturanService;
+import com.example.billingapp.repository.AreaRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,10 +27,12 @@ public class PengaturanController {
 
     private final PengaturanService pengaturanService;
     private final UserRepository userRepository;
+    private final AreaRepository areaRepository;
 
-    public PengaturanController(PengaturanService pengaturanService, UserRepository userRepository) {
+    public PengaturanController(PengaturanService pengaturanService, UserRepository userRepository, AreaRepository areaRepository) {
         this.pengaturanService = pengaturanService;
         this.userRepository = userRepository;
+        this.areaRepository = areaRepository;
     }
 
     @GetMapping
@@ -114,21 +117,21 @@ public String showKepalaAreaForm(Model model, HttpServletRequest request) {
         System.out.println("   -> TIDAK ADA USER YANG LOLOS FILTER.");
     } else {
         usersByArea.forEach((area, userList) -> {
-            System.out.println("   -> Area " + area.getDisplayName() + ": " + userList.stream().map(User::getUsername).collect(Collectors.toList()));
+            System.out.println("   -> Area " + area.getName() + ": " + userList.stream().map(User::getUsername).collect(Collectors.toList()));
         });
     }
     System.out.println("---------------------------------------------------\n");
     // --- AKHIR LANGKAH DEBUGGING ---
 
     Map<Area, User> currentHeads = new HashMap<>();
-    for (Area area : Area.values()) {
+    for (Area area : areaRepository.findAll()) {
         userRepository.findByAreaAndIsAreaHead(area, true)
                 .ifPresent(head -> currentHeads.put(area, head));
     }
 
     model.addAttribute("usersByArea", usersByArea);
     model.addAttribute("currentHeads", currentHeads);
-    model.addAttribute("allAreas", Area.values());
+    model.addAttribute("allAreas", areaRepository.findAll());
     model.addAttribute("pageTitle", "Manajemen Kepala Area");
     model.addAttribute("requestURI", request.getRequestURI());
     return "pengaturan_kepala_area";

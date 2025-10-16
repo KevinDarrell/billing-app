@@ -1,8 +1,8 @@
 package com.example.billingapp.controller;
 
-import com.example.billingapp.model.Area; // 1. Import Enum Area
 import com.example.billingapp.model.User;
 import com.example.billingapp.service.UserService;
+import com.example.billingapp.repository.AreaRepository; // 3. Import AreaRepository
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +14,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes; // 2. Imp
 public class AuthController {
 
     private final UserService userService;
+    private final AreaRepository areaRepository; // 4. Tambahkan AreaRepository
 
     // Best Practice: Menggunakan constructor injection
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, AreaRepository areaRepository) {
         this.userService = userService;
+        this.areaRepository = areaRepository; // 5. Inisialisasi di constructor
     }
 
     @GetMapping("/login")
@@ -30,7 +32,7 @@ public class AuthController {
         model.addAttribute("user", new User());
         
         // ✅ PERBAIKAN: Kirim daftar semua area ke halaman HTML untuk mengisi dropdown
-        model.addAttribute("allAreas", Area.values());
+        model.addAttribute("allAreas", areaRepository.findAll());
         
         return "register";
     }

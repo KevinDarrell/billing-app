@@ -1,6 +1,6 @@
 package com.example.billingapp.controller;
 
-import com.example.billingapp.model.Area;
+
 import com.example.billingapp.model.Pembayaran;
 import com.example.billingapp.model.Tagihan;
 import com.example.billingapp.model.User;
@@ -123,7 +123,7 @@ public class PembayaranController {
         }
 
         // Format baru: NOMOR_INVOICE_YANG_AMAN-AREA.extension
-        String newFileName = tagihan.getLokasi().getArea().name() + "-" + safeInvoiceNumber + fileExtension;
+        String newFileName = tagihan.getLokasi().getArea().getName() + "-" + safeInvoiceNumber + fileExtension;
         
         // Simpan file dengan nama baru
         file.transferTo(new File(directory.getAbsolutePath() + File.separator + newFileName));

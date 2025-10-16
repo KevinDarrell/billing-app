@@ -2,14 +2,11 @@ package com.example.billingapp.controller;
 
 import com.example.billingapp.service.ReminderService;
 import com.example.billingapp.service.ReportService;
-import com.itextpdf.text.DocumentException;
-import jakarta.mail.MessagingException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.time.YearMonth;
 
 @RestController

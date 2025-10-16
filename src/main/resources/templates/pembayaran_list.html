@@ -37,7 +37,7 @@
                                 <tbody>
                                     <tr th:each="p, iterStat : ${pembayarans}">
                                         <td th:text="${iterStat.count}"></td>
-                                        <td th:text="${p.tagihan.lokasi.area?.displayName}"></td>
+                                        <td th:text="${p.tagihan.lokasi.area?.name}"></td>
                                         <td th:text="${p.tagihan?.vendor?.namaVendor} ?: '-'"></td>
                                         <td th:text="${p.tagihan?.invoiceNumber}"></td> <td th:text="${'Rp ' + #numbers.formatDecimal(p.tagihan.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}"></td>
                                         <td th:text="${p.tanggalPembayaran}"></td>

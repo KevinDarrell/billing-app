@@ -49,8 +49,8 @@
                                         <select th:field="*{area}" class="form-control" style="font-size: .8rem; border-radius: 10rem; height: 50px; padding-left: 1rem;">
                                             <option value="" disabled>-- Pilih Area Penugasan --</option>
                                             <option th:each="areaOpt : ${allAreas}"
-                                                    th:value="${areaOpt}"
-                                                    th:text="${areaOpt.displayName}"></option>
+                                                    th:value="${areaOpt.id}"
+                                                    th:text="${areaOpt.name}"></option>
                                         </select>
                                     </div>
                                     

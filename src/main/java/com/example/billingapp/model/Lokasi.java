@@ -8,8 +8,8 @@ public class Lokasi {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = true)
+    @ManyToOne
+    @JoinColumn(name = "area_id")
     private Area area;
 
     private String company;

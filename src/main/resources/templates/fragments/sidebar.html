@@ -65,6 +65,13 @@
                 <span>Manajemen User</span>
             </a>
         </li>
+
+        <li class="nav-item" sec:authorize="hasRole('ADMIN')">
+    <a class="nav-link" href="/areas">
+        <i class="fas fa-fw fa-map"></i>
+        <span>Manajemen Area</span>
+    </a>
+</li>
         
         <hr class="sidebar-divider d-none d-md-block">
 

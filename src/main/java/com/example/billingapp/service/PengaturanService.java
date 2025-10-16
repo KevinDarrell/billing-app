@@ -72,29 +72,26 @@ public class PengaturanService {
     // ✅ METHOD BARU: Untuk menyimpan perubahan Kepala Area
     @Transactional // ✅ PENTING: Agar semua operasi (update/save) berhasil atau gagal bersamaan
     public void updateAreaHeads(Map<String, String> params) {
-        // Loop untuk setiap kemungkinan area dari form (misal: "head_DKI", "head_JABAR", dst.)
+       // 1. Ambil semua user yang saat ini menjabat sebagai kepala area
+        List<User> currentHeads = userRepository.findAll().stream()
+                .filter(User::isAreaHead)
+                .collect(Collectors.toList());
+
+        // 2. Copot jabatan semua kepala area yang lama
+        for (User oldHead : currentHeads) {
+            oldHead.setAreaHead(false);
+        }
+        userRepository.saveAll(currentHeads); // Simpan perubahan (semua isAreaHead = false)
+
+        // 3. Angkat kepala area yang baru sesuai pilihan form
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            if (entry.getKey().startsWith("head_")) {
-                // Ekstrak nama Area dari key form, misal "head_DKI" -> "DKI"
-                Area area = Area.valueOf(entry.getKey().substring(5));
-                String newHeadUserIdStr = entry.getValue();
-
-                // 1. Cari & copot jabatan kepala area yang LAMA untuk area ini
-                Optional<User> oldHeadOpt = userRepository.findByAreaAndIsAreaHead(area, true);
-                if (oldHeadOpt.isPresent()) {
-                    User oldHead = oldHeadOpt.get();
-                    oldHead.setAreaHead(false);
-                    userRepository.save(oldHead);
-                }
-
-                // 2. Angkat kepala area BARU jika ada yang dipilih dari form
-                if (newHeadUserIdStr != null && !newHeadUserIdStr.isEmpty()) {
-                    Long newHeadUserId = Long.parseLong(newHeadUserIdStr);
-                    User newHead = userRepository.findById(newHeadUserId)
-                            .orElseThrow(() -> new RuntimeException("User untuk kepala area baru tidak ditemukan"));
-                    newHead.setAreaHead(true);
-                    userRepository.save(newHead);
-                }
+            if (entry.getKey().startsWith("head_") && !entry.getValue().isEmpty()) {
+                Long newHeadUserId = Long.parseLong(entry.getValue());
+                User newHead = userRepository.findById(newHeadUserId)
+                        .orElseThrow(() -> new RuntimeException("User untuk kepala area baru tidak ditemukan"));
+                newHead.setAreaHead(true);
+                userRepository.save(newHead);
             }
         }
-    } }
+    }
+    } 

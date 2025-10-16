@@ -35,18 +35,23 @@
 
                             <div class="col-md-6 mb-3">
                                 <label for="invoiceNumber" class="form-label">Nomor Invoice</label>
-                                <input id="invoiceNumber" type="text" class="form-control" th:field="*{invoiceNumber}" placeholder="Contoh: 000-0-XX/INVS/0000" required>
+                                <input id="invoiceNumber" type="text" step="1" class="form-control" th:field="*{invoiceNumber}" placeholder="Contoh: 000-0-XX/INVS/0000" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
-                                <label for="tanggalDiterima" class="form-label">Tanggal Diterima</label>
-                                <input id="tanggalDiterima" type="date" class="form-control" th:field="*{tanggalDiterima}" required>
-                            </div>
+                                    <label for="tanggalDiterima" class="form-label">Tanggal Diterima</label>
+                                    <input id="tanggalDiterima" type="date" class="form-control" required
+                                           th:name="tanggalDiterima"
+                                           th:value="${#temporals.format(tagihan.tanggalDiterima, 'yyyy-MM-dd')}">
+                                </div>
 
-                            <div class="col-md-12 mb-3">
-                                <label for="nilaiPaymentVoucher" class="form-label">Nilai Tagihan (Rp)</label>
-                                <input id="nilaiPaymentVoucher" type="number" step="1" class="form-control" th:field="*{nilaiPaymentVoucher}" required>
-                            </div>
+                            <div class="col-md-6 mb-3">
+    <label for="nilaiPaymentVoucher" class="form-label">Nilai Tagihan (Rp)</label>
+    
+    <input id="nilaiPaymentVoucher" type="number" step="1" class="form-control" required
+           name="nilaiPaymentVoucher"
+           th:value="${tagihan.nilaiPaymentVoucher != null ? #numbers.formatDecimal(tagihan.nilaiPaymentVoucher, 0, 0) : ''}">
+</div>
                             
                             <div class="col-12 mb-3">
                                 <label for="note" class="form-label">Note (Opsional)</label>

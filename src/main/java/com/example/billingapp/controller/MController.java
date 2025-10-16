@@ -1,13 +1,14 @@
 package com.example.billingapp.controller;
 
-import com.example.billingapp.model.Area;
 import com.example.billingapp.model.Company;
 import com.example.billingapp.model.Lokasi;
 import com.example.billingapp.model.User;
 import com.example.billingapp.repository.CompanyRepository;
 import com.example.billingapp.repository.LokasiRepository;
 import com.example.billingapp.repository.UserRepository;
+import com.example.billingapp.repository.AreaRepository;
 import jakarta.servlet.http.HttpServletRequest;
+
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -28,11 +29,13 @@ public class MController {
     private final CompanyRepository companyRepository;
     private final LokasiRepository lokasiRepository;
     private final UserRepository userRepository; // ✅ Tambahkan UserRepository
+    private final AreaRepository areaRepository; // ✅ Tambahkan AreaRepository
 
-    public MController(CompanyRepository companyRepository, LokasiRepository lokasiRepository, UserRepository userRepository) {
+    public MController(CompanyRepository companyRepository, LokasiRepository lokasiRepository, UserRepository userRepository, AreaRepository areaRepository) {
         this.companyRepository = companyRepository;
         this.lokasiRepository = lokasiRepository;
         this.userRepository = userRepository; // ✅ Tambahkan di constructor
+        this.areaRepository = areaRepository; // ✅ Tambahkan di constructor
     }
 
     @GetMapping("/datavendorlokasi")
@@ -74,7 +77,7 @@ public class MController {
 
         // ✅ LOGIKA FILTER: Admin bisa pilih semua area, User tidak
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-            model.addAttribute("allAreas", Area.values());
+            model.addAttribute("allAreas", areaRepository.findAll());
         }
 
         model.addAttribute("pageTitle", "Tambah Lokasi");
@@ -136,7 +139,7 @@ public class MController {
         Lokasi lokasi;
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             lokasi = lokasiRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Lokasi tidak ditemukan"));
-            model.addAttribute("allAreas", Area.values()); // Admin bisa ubah area
+            model.addAttribute("allAreas", areaRepository.findAll()); // Admin bisa ubah area
         } else {
             lokasi = lokasiRepository.findByIdAndArea(id, currentUser.getArea()) // Method baru di LokasiRepository
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lokasi tidak ditemukan atau Anda tidak punya akses"));

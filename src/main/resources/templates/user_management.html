@@ -33,7 +33,7 @@
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.email}"></td>
                                         <td th:text="${#strings.replace(user.role, 'ROLE_', '')}"></td>
-                                        <td th:text="${user.area?.displayName} ?: '-'"></td>
+                                        <td th:text="${user.area?.name} ?: '-'"></td>
                                         <td class="text-center">
                                             <span th:text="${user.enabled} ? 'Aktif' : 'Nonaktif'"
                                                   th:classappend="${user.enabled} ? 'badge badge-success' : 'badge badge-danger'"></span>

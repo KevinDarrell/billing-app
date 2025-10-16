@@ -23,10 +23,10 @@
                             <div class="col-md-12 mb-3">
                                 <label for="tagihan" class="form-label">Tagihan yang Akan Dibayar</label>
                                 <select id="tagihan" class="form-control" th:field="*{tagihan}" required>
-                                    <option value="">-- Pilih Tagihan (Vendor - Nilai) --</option>
+                                    <option value="">-- Pilih Tagihan --</option>
                                     <option th:each="t : ${tagihans}"
                                             th:value="${t.id}"
-                                            th:text="${t.vendor.namaVendor} + ' - ' + ${'Rp ' + #numbers.formatDecimal(t.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}">
+                                            th:text="${t.vendor.namaVendor} + ' - ' + ${t.invoiceNumber} + ' - ' +  ${t.tanggalDiterima} + ' - ' + ${'Rp ' + #numbers.formatDecimal(t.nilaiPaymentVoucher, 0, 'POINT', 0, 'COMMA')}">
                                     </option>
                                 </select>
                             </div>

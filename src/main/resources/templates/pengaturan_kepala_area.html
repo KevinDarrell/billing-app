@@ -8,6 +8,7 @@
         <div id="content">
             <div th:replace="~{fragments/topbar :: topbar}"></div>
             <div class="container-fluid">
+                <h1 class="h3 mb-4 text-gray-800" th:text="${pageTitle}">Manajemen Kepala Area</h1>
 
                 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
 
@@ -19,8 +20,10 @@
                         <form th:action="@{/pengaturan/kepala-area/save}" method="post">
                             <div class="row">
                                 <div th:each="area : ${allAreas}" class="col-md-6 form-group mb-3">
-                                    <label th:for="${'head_' + area.name()}" th:text="'Kepala Area ' + ${area.displayName}"></label>
-                                    <select class="form-control" th:id="${'head_' + area.name()}" th:name="${'head_' + area.name()}">
+                                    
+                                    <label th:for="${'head_' + area.name}" th:text="'Kepala Area ' + ${area.name}"></label>
+                                    <select class="form-control" th:id="${'head_' + area.name}" th:name="${'head_' + area.name}">
+                                        
                                         <option value="">-- Tidak Ada --</option>
                                         
                                         <th:block th:if="${usersByArea.containsKey(area)}">
