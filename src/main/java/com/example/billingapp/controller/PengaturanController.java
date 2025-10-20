@@ -44,7 +44,6 @@ public class PengaturanController {
         return "pengaturan";
     }
 
-    // Method untuk menyimpan pengaturan email
      @PostMapping("/email/save")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveEmailSettings(@RequestParam String emailTo, @RequestParam String emailCc, RedirectAttributes redirectAttributes) {
@@ -52,7 +51,6 @@ public class PengaturanController {
         redirectAttributes.addFlashAttribute("successMessage", "Pengaturan email berhasil diperbarui.");
         return "redirect:/pengaturan";
     }
-     // ✅ METHOD UNTUK USER MENGUBAH PASSWORD SENDIRI
     @PostMapping("/password/user")
     public String changeOwnPassword(@RequestParam String currentPassword,
                                     @RequestParam String newPassword,
@@ -72,7 +70,6 @@ public class PengaturanController {
         return "redirect:/pengaturan";
     }
 
-    // ✅ METHOD UNTUK ADMIN MERESET PASSWORD USER LAIN
     @PostMapping("/password/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String changeUserPasswordByAdmin(@RequestParam Long userId,
@@ -93,12 +90,10 @@ public class PengaturanController {
     }
 
 
-    // ✅ PERBAIKAN 1: Method untuk MENAMPILKAN halaman manajemen Kepala Area
     @GetMapping("/kepala-area")
 @PreAuthorize("hasRole('ADMIN')")
 public String showKepalaAreaForm(Model model, HttpServletRequest request) {
     
-    // --- LANGKAH DEBUGGING ---
     System.out.println("\n--- MEMULAI PROSES DEBUGGING 'showKepalaAreaForm' ---");
     List<User> allUsers = userRepository.findAll();
     System.out.println("1. Total user yang ditemukan di database: " + allUsers.size());
@@ -107,7 +102,6 @@ public String showKepalaAreaForm(Model model, HttpServletRequest request) {
         System.out.println("   - User: " + u.getUsername() + " | Role: '" + u.getRole() + "' | Area: " + u.getArea());
     }
 
-    // Ini adalah filter yang sedang kita uji
     Map<Area, List<User>> usersByArea = allUsers.stream()
             .filter(user -> user.getArea() != null && "USER".equals(user.getRole()))
             .collect(Collectors.groupingBy(User::getArea));
@@ -121,7 +115,6 @@ public String showKepalaAreaForm(Model model, HttpServletRequest request) {
         });
     }
     System.out.println("---------------------------------------------------\n");
-    // --- AKHIR LANGKAH DEBUGGING ---
 
     Map<Area, User> currentHeads = new HashMap<>();
     for (Area area : areaRepository.findAll()) {
@@ -137,12 +130,9 @@ public String showKepalaAreaForm(Model model, HttpServletRequest request) {
     return "pengaturan_kepala_area";
 }
     
-
-    // ✅ PERBAIKAN 2: Method untuk MENYIMPAN perubahan Kepala Area
     @PostMapping("/kepala-area/save")
     @PreAuthorize("hasRole('ADMIN')")
     public String saveKepalaArea(@RequestParam Map<String, String> params, RedirectAttributes redirectAttributes) {
-        // 'params' akan berisi semua data dari form, contoh: {"head_DKI": "12", "head_JABAR": "15"}
         pengaturanService.updateAreaHeads(params);
         redirectAttributes.addFlashAttribute("successMessage", "Perubahan Kepala Area berhasil disimpan.");
         return "redirect:/pengaturan/kepala-area";

@@ -1,50 +1,35 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<div th:fragment="topbar">
+<div th:fragment="topbar" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-        <!-- Tombol toggle sidebar (mobile) -->
         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
         </button>
 
-        <h5 class="font-weight-bold text-gray-800" th:text="${pageTitle} ?: 'Dashboard'"></h5>
+        <h5 class="font-weight-bold text-gray-800 d-none d-sm-inline-block" th:text="${pageTitle} ?: 'Dashboard'"></h5>
 
-        <!-- Navbar Right -->
         <ul class="navbar-nav ml-auto">
-
-            <!-- Divider -->
             <div class="topbar-divider d-none d-sm-block"></div>
 
-            <!-- User Information -->
             <li class="nav-item dropdown no-arrow">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <!-- ✅ Gunakan sec:authentication agar aman -->
-                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-                          sec:authentication="name">Guest</span>
-                    <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
+                    <span class="mr-2 d-none d-lg-inline text-gray-600 small" sec:authentication="name">Guest</span>
+                    <img class="img-profile rounded-circle" th:src="@{/img/undraw_profile.svg}">
                 </a>
 
-                <!-- Dropdown Menu -->
-                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
-                     aria-labelledby="userDropdown">
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                     <a class="dropdown-item" href="#">
-                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Profile
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
                     </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                        Logout
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i> Logout
                     </a>
                 </div>
             </li>
         </ul>
     </nav>
 
-    <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -55,13 +40,15 @@
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">Apakah Anda yakin ingin logout?</div>
+                <div class="modal-body">Apakah Anda yakin ingin keluar dari sesi ini?</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-                    <a class="btn btn-primary" th:href="@{/logout}">Logout</a>
+                    
+                    <form th:action="@{/logout}" method="post">
+                        <button type="submit" class="btn btn-primary">Logout</button>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-</html>

@@ -27,8 +27,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // ✅ BAGIAN KUNCI: Di sinilah prefix "ROLE_" ditambahkan secara konsisten
-        // untuk Spring Security.
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 

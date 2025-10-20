@@ -37,7 +37,7 @@ public class Tagihan {
     private LocalDate tanggalDiterima;
     private Double nilaiPaymentVoucher;
     private String diterimaOleh;
-    private String status; // "Belum Dibayar" atau "Sudah Dibayar"
+    private String status; 
 
     // Getter & Setter
     public Long getId() { return id; }

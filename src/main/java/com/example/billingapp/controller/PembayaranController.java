@@ -111,9 +111,8 @@ public class PembayaranController {
         File directory = new File(uploadDir);
         if (!directory.exists()) directory.mkdirs();
         
-        // ✅ PERBAIKAN: Logika baru untuk rename file sesuai format invoice
+      
         String invoiceNumber = tagihan.getInvoiceNumber();
-        // Ganti semua karakter '/' dengan '_' agar aman untuk nama file
         String safeInvoiceNumber = invoiceNumber.replaceAll("/", "_");
         
         String originalFileName = file.getOriginalFilename();
@@ -122,14 +121,14 @@ public class PembayaranController {
             fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         }
 
-        // Format baru: NOMOR_INVOICE_YANG_AMAN-AREA.extension
+    
         String newFileName = tagihan.getLokasi().getArea().getName() + "-" + safeInvoiceNumber + fileExtension;
         
-        // Simpan file dengan nama baru
+       
         file.transferTo(new File(directory.getAbsolutePath() + File.separator + newFileName));
 
         pembayaran.setTagihan(tagihan);
-        pembayaran.setBuktiTransferPath(newFileName); // Simpan nama file yang sudah di-rename
+        pembayaran.setBuktiTransferPath(newFileName); 
         pembayaranRepository.save(pembayaran);
 
         tagihan.setStatus("Sudah Dibayar");
@@ -162,10 +161,6 @@ public class PembayaranController {
             return ResponseEntity.notFound().build(); }
         }
 
-        // Helper method: format Double ke Rupiah
-    private String formatRupiah(Double nilai) {
-        if (nilai == null) return "-";
-        return "Rp " + String.format("%,.0f", nilai).replace(",", ".");
-
-    }
+       
+   
 }

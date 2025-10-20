@@ -14,7 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
-@PreAuthorize("hasRole('ADMIN')") // Mengamankan seluruh controller ini hanya untuk Admin
+@PreAuthorize("hasRole('ADMIN')") 
 public class UserController {
 
     private final UserRepository userRepository;
@@ -36,7 +36,7 @@ public class UserController {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User tidak ditemukan"));
         
-        // Membalikkan status: jika true menjadi false, jika false menjadi true
+       
         user.setEnabled(!user.isEnabled()); 
         userRepository.save(user);
         

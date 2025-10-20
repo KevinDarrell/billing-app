@@ -53,7 +53,7 @@ public class ReminderService {
             body.append("<p>Berikut adalah daftar tagihan yang Anda buat dan statusnya masih 'Belum Dibayar':</p>");
             body.append("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse: collapse; font-family: sans-serif; font-size: 12px;'>");
             
-            // ✅ PERBAIKAN: Urutan header tabel disesuaikan
+          
             body.append("<tr style='background-color:#f2f2f2;'>")
                 .append("<th>Area</th>")
                 .append("<th>Vendor</th>")
@@ -69,11 +69,6 @@ public class ReminderService {
 
             for (Tagihan t : userTagihans) {
 
-                String style = "";
-            if ("Belum Dibayar".equalsIgnoreCase(t.getStatus())) {
-                style = " style='background-color: #ff0000ff;'"; // Warna merah muda
-            }
-                // ✅ PERBAIKAN: Urutan data disesuaikan dengan header
                 body.append("<tr>")
                     .append("<td>").append(t.getLokasi().getArea().getName()).append("</td>")
                     .append("<td>").append(t.getVendor().getNamaVendor()).append("</td>")

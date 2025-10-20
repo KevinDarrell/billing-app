@@ -45,7 +45,7 @@ public class TagihanController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<Tagihan> tagihans;
 
-        // ✅ LOGIKA FILTER: Admin melihat semua, User melihat area sendiri
+
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             tagihans = tagihanRepository.findAll();
         } else {
@@ -54,7 +54,7 @@ public class TagihanController {
         
         model.addAttribute("tagihans", tagihans);
 
-        // Map untuk format Rupiah
+
         Map<Long, String> rupiahMap = new HashMap<>();
         for (Tagihan t : tagihans) {
             rupiahMap.put(t.getId(), formatRupiah(t.getNilaiPaymentVoucher()));
@@ -71,7 +71,7 @@ public class TagihanController {
         User currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         
-        // ✅ LOGIKA FILTER: Dropdown lokasi hanya menampilkan lokasi sesuai area user
+    
         List<Lokasi> lokasiOptions;
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             lokasiOptions = lokasiRepository.findAll();
@@ -80,7 +80,7 @@ public class TagihanController {
         }
 
         model.addAttribute("tagihan", new Tagihan());
-        model.addAttribute("vendors", companyRepository.findAll()); // Semua user boleh lihat semua vendor
+        model.addAttribute("vendors", companyRepository.findAll());
         model.addAttribute("lokasis", lokasiOptions);
         model.addAttribute("pageTitle", "Tambah Tagihan");
         model.addAttribute("requestURI", request.getRequestURI());
@@ -94,7 +94,6 @@ public class TagihanController {
         if (tagihan.getStatus() == null || tagihan.getStatus().isEmpty()) {
             tagihan.setStatus("Belum Dibayar");
         }
-        // Area untuk tagihan ini akan otomatis mengikuti 'Lokasi' yang dipilih
         tagihanRepository.save(tagihan);
         return "redirect:/tagihan";
     }
@@ -104,7 +103,7 @@ public class TagihanController {
         User currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        // ✅ LOGIKA KEAMANAN: Pastikan user tidak mengedit data di luar areanya
+    
         Tagihan tagihan;
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             tagihan = tagihanRepository.findById(id)
@@ -115,7 +114,6 @@ public class TagihanController {
         }
 
         model.addAttribute("tagihan", tagihan);
-        // Logika untuk mengisi dropdown 'vendors' dan 'lokasis' di form edit...
         model.addAttribute("vendors", companyRepository.findAll());
         model.addAttribute("lokasis", auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")) ? lokasiRepository.findAll() : lokasiRepository.findByArea(currentUser.getArea()));
         
@@ -135,7 +133,6 @@ public class TagihanController {
             existingTagihan = tagihanRepository.findByIdAndLokasiArea(id, currentUser.getArea()).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
         }
         
-        // Hanya update field yang boleh diubah
         existingTagihan.setVendor(tagihanDetails.getVendor());
         existingTagihan.setLokasi(tagihanDetails.getLokasi());
         existingTagihan.setTanggalDiterima(tagihanDetails.getTanggalDiterima());
@@ -146,7 +143,6 @@ public class TagihanController {
         return "redirect:/tagihan";
     }
 
-    // ✅ METHOD DELETE YANG LENGKAP DAN AMAN
     @GetMapping("/delete/{id}")
     public String deleteTagihan(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
          User currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();

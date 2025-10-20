@@ -1,6 +1,6 @@
 package com.example.billingapp.service;
 
-import com.example.billingapp.model.Area;
+
 import com.example.billingapp.model.AppSettings;
 import com.example.billingapp.model.User;
 import com.example.billingapp.repository.AppSettingsRepository;
@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,21 +68,17 @@ public class PengaturanService {
         userRepository.save(user);
     }
 
-    // ✅ METHOD BARU: Untuk menyimpan perubahan Kepala Area
-    @Transactional // ✅ PENTING: Agar semua operasi (update/save) berhasil atau gagal bersamaan
+    @Transactional 
     public void updateAreaHeads(Map<String, String> params) {
-       // 1. Ambil semua user yang saat ini menjabat sebagai kepala area
         List<User> currentHeads = userRepository.findAll().stream()
                 .filter(User::isAreaHead)
                 .collect(Collectors.toList());
 
-        // 2. Copot jabatan semua kepala area yang lama
         for (User oldHead : currentHeads) {
             oldHead.setAreaHead(false);
         }
-        userRepository.saveAll(currentHeads); // Simpan perubahan (semua isAreaHead = false)
+        userRepository.saveAll(currentHeads);
 
-        // 3. Angkat kepala area yang baru sesuai pilihan form
         for (Map.Entry<String, String> entry : params.entrySet()) {
             if (entry.getKey().startsWith("head_") && !entry.getValue().isEmpty()) {
                 Long newHeadUserId = Long.parseLong(entry.getValue());

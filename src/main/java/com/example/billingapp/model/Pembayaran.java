@@ -14,10 +14,9 @@ public class Pembayaran {
     private Tagihan tagihan;
 
     private LocalDate tanggalPembayaran;
-    private String buktiTransferPath; // nanti dipakai untuk upload file
+    private String buktiTransferPath;
     private String dibayarOleh;
 
-    // Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

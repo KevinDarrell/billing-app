@@ -17,7 +17,7 @@ public class Lokasi {
     private String alamat;
     private String kota;
 
-    // Getter & Setter
+ 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

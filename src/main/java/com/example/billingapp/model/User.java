@@ -16,10 +16,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role; // ADMIN / USER
+    private String role;
 
     @Column(unique = true, nullable = false)
-    private String email; // ✅ Tambahkan kolom email
+    private String email;
 
     @ManyToOne
     @JoinColumn(name = "area_id")

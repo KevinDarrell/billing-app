@@ -24,19 +24,19 @@ public class AreaController {
         model.addAttribute("areas", areaRepository.findAll());
         model.addAttribute("pageTitle", "Manajemen Area");
         model.addAttribute("requestURI", request.getRequestURI());
-        return "area_list"; // File HTML baru
+        return "area_list"; 
     }
     
-    // Method untuk menampilkan form tambah area
+
     @GetMapping("/add")
     public String addAreaForm(Model model, HttpServletRequest request) {
         model.addAttribute("area", new Area());
         model.addAttribute("pageTitle", "Tambah Area");
         model.addAttribute("requestURI", request.getRequestURI());
-        return "area_form"; // File HTML baru
+        return "area_form"; 
     }
 
-    // Method untuk menyimpan area baru atau update
+
     @PostMapping("/save")
     public String saveArea(@ModelAttribute Area area, RedirectAttributes redirectAttributes) {
         areaRepository.save(area);
@@ -44,7 +44,7 @@ public class AreaController {
         return "redirect:/areas";
     }
 
-    // Method untuk menampilkan form edit
+  
     @GetMapping("/edit/{id}")
     public String editAreaForm(@PathVariable Long id, Model model, HttpServletRequest request) {
         Area area = areaRepository.findById(id).orElseThrow();
@@ -54,7 +54,7 @@ public class AreaController {
         return "area_form";
     }
 
-    // Method untuk menghapus area
+
     @GetMapping("/delete/{id}")
     public String deleteArea(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         areaRepository.deleteById(id);

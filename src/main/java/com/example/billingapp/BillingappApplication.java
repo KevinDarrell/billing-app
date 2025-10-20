@@ -10,7 +10,7 @@ public class BillingappApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(BillingappApplication.class, args);
-        System.out.println("✅ Spring Boot sudah jalan dan scan semua controller di com.example.billingapp");
+       
     }
 
 }

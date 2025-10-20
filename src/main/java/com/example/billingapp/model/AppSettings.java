@@ -17,7 +17,6 @@ public class AppSettings {
     @Column(name = "setting_value", columnDefinition = "TEXT")
     private String settingValue;
 
-    // Dibutuhkan oleh JPA
     public AppSettings() {
     }
 

@@ -28,14 +28,14 @@ import java.security.Principal;
 public class MController {
     private final CompanyRepository companyRepository;
     private final LokasiRepository lokasiRepository;
-    private final UserRepository userRepository; // ✅ Tambahkan UserRepository
-    private final AreaRepository areaRepository; // ✅ Tambahkan AreaRepository
+    private final UserRepository userRepository; // 
+    private final AreaRepository areaRepository; // 
 
     public MController(CompanyRepository companyRepository, LokasiRepository lokasiRepository, UserRepository userRepository, AreaRepository areaRepository) {
         this.companyRepository = companyRepository;
         this.lokasiRepository = lokasiRepository;
-        this.userRepository = userRepository; // ✅ Tambahkan di constructor
-        this.areaRepository = areaRepository; // ✅ Tambahkan di constructor
+        this.userRepository = userRepository; // 
+        this.areaRepository = areaRepository; // 
     }
 
     @GetMapping("/datavendorlokasi")
@@ -43,7 +43,6 @@ public class MController {
         User currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // ✅ LOGIKA FILTER: Cek role, lalu filter data lokasi berdasarkan area
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             model.addAttribute("lokasis", lokasiRepository.findAll()); // Admin lihat semua
         } else {
@@ -75,7 +74,6 @@ public class MController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("lokasi", new Lokasi());
 
-        // ✅ LOGIKA FILTER: Admin bisa pilih semua area, User tidak
         if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             model.addAttribute("allAreas", areaRepository.findAll());
         }
@@ -90,7 +88,6 @@ public class MController {
         User currentUser = userRepository.findByUsername(principal.getName()).orElseThrow();
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         
-        // ✅ LOGIKA KEAMANAN: Paksa 'area' sesuai area user jika bukan admin
         if (!authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             lokasi.setArea(currentUser.getArea());
         }
@@ -129,7 +126,6 @@ public class MController {
         return "redirect:/datavendorlokasi";
     }
 
-    // --- FITUR EDIT LOKASI ---
 
     @GetMapping("/editLokasi/{id}")
     public String editLokasiForm(@PathVariable("id") Long id, Model model, Principal principal, HttpServletRequest request) {
@@ -139,9 +135,9 @@ public class MController {
         Lokasi lokasi;
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
             lokasi = lokasiRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Lokasi tidak ditemukan"));
-            model.addAttribute("allAreas", areaRepository.findAll()); // Admin bisa ubah area
+            model.addAttribute("allAreas", areaRepository.findAll()); 
         } else {
-            lokasi = lokasiRepository.findByIdAndArea(id, currentUser.getArea()) // Method baru di LokasiRepository
+            lokasi = lokasiRepository.findByIdAndArea(id, currentUser.getArea()) 
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lokasi tidak ditemukan atau Anda tidak punya akses"));
         }
 
@@ -169,7 +165,7 @@ public class MController {
         lokasi.setAlamat(lokasiDetails.getAlamat());
         lokasi.setKota(lokasiDetails.getKota());
         if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
-           lokasi.setArea(lokasiDetails.getArea()); // Hanya admin yang bisa ubah area
+           lokasi.setArea(lokasiDetails.getArea()); 
         }
 
         lokasiRepository.save(lokasi);

@@ -31,7 +31,6 @@ public interface TagihanRepository extends JpaRepository<Tagihan, Long> {
     @Query("SELECT COUNT(t) FROM Tagihan t WHERE t.status = :status AND t.lokasi.area = :area AND MONTH(t.tanggalDiterima) = :month AND YEAR(t.tanggalDiterima) = :year")
     Long countByStatusAndLokasiAreaAndMonthAndYear(@Param("status") String status, @Param("area") Area area, @Param("month") int month, @Param("year") int year);
 
-    // ✅ TAMBAHKAN METHOD INI
     @Query("SELECT t FROM Tagihan t WHERE t.status = 'Belum Dibayar' AND t.lokasi.area = :area")
     List<Tagihan> findUnpaidByArea(@Param("area") Area area);
 

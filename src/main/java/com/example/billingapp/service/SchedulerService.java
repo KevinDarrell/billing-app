@@ -19,7 +19,7 @@ public class SchedulerService {
     public void scheduleWeeklyReminder() {
         System.out.println("🚀 Menjalankan scheduler: Reminder Mingguan...");
         
-        // ✅ PERBAIKAN: Hapus try-catch, panggil langsung
+
         reminderService.sendWeeklyReminders();
     }
 

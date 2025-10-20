@@ -13,7 +13,6 @@ import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
-import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -25,7 +24,6 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -162,7 +160,6 @@ public class ReportService {
         document.add(table);
         document.close();
         
-        // ✅ PERBAIKAN: File PDF utama juga harus ditambahkan ke lampiran
         attachments.add(pdfFile);
         
         return pdfFile;
@@ -180,10 +177,6 @@ public class ReportService {
                 .append("<th>Area</th><th>Vendor</th><th>Company</th><th>No Invoice</th><th>Lokasi</th><th>Kota/Kab</th><th>Tanggal Bayar</th><th>Jumlah</th><th>Bukti Bayar</th></tr>");
 
         for (Tagihan t : tagihans) {
-            String style = "";
-            if ("Belum Dibayar".equalsIgnoreCase(t.getStatus())) {
-            style = " style='background-color: #ff0000ff;'"; // Warna merah muda
-        }
             htmlBody.append("<tr>");
             htmlBody.append("<td>").append(t.getLokasi().getArea().getName()).append("</td>");
             htmlBody.append("<td>").append(t.getVendor().getNamaVendor()).append("</td>");
@@ -200,7 +193,7 @@ public class ReportService {
             }
 
         htmlBody.append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>");
-        // ... (logika link bukti bayar Anda)
+     
             String buktiPath = t.getPembayaran() != null ? t.getPembayaran().getBuktiTransferPath() : null;
             if (StringUtils.hasText(buktiPath)) {
                 String fileUrl = "http://localhost:" + serverPort + "/uploads/" + buktiPath;

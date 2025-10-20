@@ -12,7 +12,6 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    // Gunakan constructor injection
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -22,8 +21,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User tidak ditemukan: " + username));
 
-        // ✅ PERBAIKAN UTAMA: Pastikan Anda me-return CustomUserDetails di sini.
-        // Jangan gunakan 'new org.springframework.security.core.userdetails.User(...)'
         return new CustomUserDetails(user);
     }
-}
+}   

@@ -24,7 +24,7 @@ public class ManualTriggerController {
     @GetMapping("/send-report")
     public ResponseEntity<String> triggerMonthlyReport() {
          System.out.println("\n>>> FUNGSI MANUAL REPORT DIPANGGIL <<<\n");
-       //YearMonth lastMonth = YearMonth.now().minusMonths(1);
+        //YearMonth lastMonth = YearMonth.now().minusMonths(1);
         YearMonth currentMonth = YearMonth.now(); //.minusMonths(1);
         try {
             // Gunakan bulan dan tahun saat ini untuk testing cepat saja (jika production lastMonth.getMonthValue(), lastMonth.getYear())

@@ -8,7 +8,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
 import java.io.File;
-import java.util.List; // <- wajib import List
+import java.util.List; 
 
 @Service
 public class EmailService {
@@ -19,24 +19,7 @@ public class EmailService {
         this.mailSender = mailSender;
     }
 
-    // Method untuk kirim satu attachment (opsional, bisa tetap dipakai)
-    public void sendEmailWithAttachment(String[] to, String subject, String text, File attachment) throws MessagingException {
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message, true);
 
-        helper.setTo(to);
-        helper.setSubject(subject);
-        helper.setText(text, true);
-
-        if (attachment != null && attachment.exists()) {
-            FileSystemResource file = new FileSystemResource(attachment);
-            helper.addAttachment(file.getFilename(), file);
-        }
-
-        mailSender.send(message);
-    }
-
-    // Method baru untuk multiple attachment
     public void sendEmailWithAttachments(String[] to, String subject, String text, List<File> attachments) throws MessagingException {
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -63,7 +46,7 @@ public class EmailService {
 
     helper.setTo(to);
     helper.setSubject(subject);
-    helper.setText(htmlContent, true); // true = isi email dalam format HTML
+    helper.setText(htmlContent, true);
 
     mailSender.send(message);
 }

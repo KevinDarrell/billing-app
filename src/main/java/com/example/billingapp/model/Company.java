@@ -11,7 +11,6 @@ public class Company {
     private String namaVendor;
     private String emailVendor;
 
-    // Getter & Setter
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
