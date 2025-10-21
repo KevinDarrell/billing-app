@@ -114,9 +114,9 @@ public class ReportService {
         document.add(title);
         document.add(new Paragraph("\n"));
 
-        PdfPTable table = new PdfPTable(9);
+        PdfPTable table = new PdfPTable(8);
         table.setWidthPercentage(100);
-        table.setWidths(new float[]{2, 3, 3, 3, 3, 3, 2, 3, 3});
+        table.setWidths(new float[]{2, 3, 3, 3, 3, 3, 2, 3,});
         Font headFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
 
         table.addCell(new PdfPCell(new Phrase("Area", headFont)));
@@ -127,7 +127,6 @@ public class ReportService {
         table.addCell(new PdfPCell(new Phrase("Kota/Kab", headFont)));
         table.addCell(new PdfPCell(new Phrase("Tgl Bayar", headFont)));
         table.addCell(new PdfPCell(new Phrase("Jumlah", headFont)));
-        table.addCell(new PdfPCell(new Phrase("Bukti Bayar", headFont)));
 
         for (Tagihan t : tagihans) {
             table.addCell(t.getLokasi().getArea().getName());
@@ -139,31 +138,26 @@ public class ReportService {
 
             Pembayaran p = t.getPembayaran();
             table.addCell(p != null ? p.getTanggalPembayaran().toString() : "Belum Dibayar");
+            
             table.addCell(formatRupiah(t.getNilaiPaymentVoucher()));
 
-            String buktiPath = (p != null) ? p.getBuktiTransferPath() : null;
 
-            if (StringUtils.hasText(buktiPath)) {
-                String fileUrl = "http://localhost:" + serverPort + "/uploads/" + buktiPath;
-                Chunk link = new Chunk("Lihat Bukti");
-                link.setAnchor(fileUrl);
-                PdfPCell cell = new PdfPCell(new Phrase(link));
-                table.addCell(cell);
+            String buktiPath = (p != null) ? p.getBuktiTransferPath() : null;
+        if (StringUtils.hasText(buktiPath)) {
             File buktiFile = new File(uploadDir + File.separator + buktiPath);
-                if (buktiFile.exists()) {
-                    attachments.add(buktiFile);
-                }
-            } else {
-                table.addCell("-");
+            if (buktiFile.exists()) {
+                attachments.add(buktiFile);
             }
         }
-        document.add(table);
-        document.close();
-        
-        attachments.add(pdfFile);
-        
-        return pdfFile;
     }
+
+    document.add(table);
+    document.close();
+    
+    attachments.add(pdfFile);
+    
+    return pdfFile;
+}
 
     private String createHtmlBodyForArea(List<Tagihan> tagihans, Area area, String bulan, String tahun) {
         StringBuilder htmlBody = new StringBuilder();
@@ -174,7 +168,7 @@ public class ReportService {
 
         htmlBody.append("<table border='1' cellpadding='6' cellspacing='0' style='border-collapse: collapse; font-family: sans-serif; font-size: 12px;'>");
         htmlBody.append("<tr style='background-color:#f2f2f2; text-align:left;'>")
-                .append("<th>Area</th><th>Vendor</th><th>Company</th><th>No Invoice</th><th>Lokasi</th><th>Kota/Kab</th><th>Tanggal Bayar</th><th>Jumlah</th><th>Bukti Bayar</th></tr>");
+                .append("<th>Area</th><th>Vendor</th><th>Company</th><th>No Invoice</th><th>Lokasi</th><th>Kota/Kab</th><th>Tanggal Bayar</th><th>Jumlah</th></tr>");
 
         for (Tagihan t : tagihans) {
             htmlBody.append("<tr>");
@@ -192,16 +186,7 @@ public class ReportService {
             htmlBody.append("<td>Belum Dibayar</td>");
             }
 
-        htmlBody.append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>");
-     
-            String buktiPath = t.getPembayaran() != null ? t.getPembayaran().getBuktiTransferPath() : null;
-            if (StringUtils.hasText(buktiPath)) {
-                String fileUrl = "http://localhost:" + serverPort + "/uploads/" + buktiPath;
-                htmlBody.append("<td><a href='").append(fileUrl).append("' target='_blank'>Lihat Bukti</a></td>");
-            } else {
-                htmlBody.append("<td>-</td>");
-            }
-            htmlBody.append("</tr>");
+            htmlBody.append("<td>").append(formatRupiah(t.getNilaiPaymentVoucher())).append("</td>");
         }
         htmlBody.append("</table>");
         htmlBody.append("<br><p>Terima kasih.</p>");

@@ -15,7 +15,7 @@ public class SchedulerService {
         this.reportService = reportService;
     }
 
-    @Scheduled(cron = "0 0 8 * * MON", zone = "Asia/Jakarta")
+    @Scheduled(cron = "0 0 9 * * MON", zone = "Asia/Jakarta")
     public void scheduleWeeklyReminder() {
         System.out.println("🚀 Menjalankan scheduler: Reminder Mingguan...");
         
@@ -23,7 +23,7 @@ public class SchedulerService {
         reminderService.sendWeeklyReminders();
     }
 
-    @Scheduled(cron = "0 0 9 1 * ?", zone = "Asia/Jakarta")
+    @Scheduled(cron = "0 0 9 2 * ?", zone = "Asia/Jakarta")
     public void scheduleMonthlyReport() {
         System.out.println("🚀 Menjalankan scheduler: Laporan Bulanan...");
         YearMonth lastMonth = YearMonth.now().minusMonths(1);
